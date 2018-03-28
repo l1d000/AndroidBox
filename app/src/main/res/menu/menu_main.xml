@@ -3,8 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.l1d000.blegatt.com.l1d000.gatt.MainActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_scan"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="@string/action_scan"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_stop"
+        android:orderInCategory="100"
+        android:title="@string/action_stop"
         app:showAsAction="never" />
 </menu>

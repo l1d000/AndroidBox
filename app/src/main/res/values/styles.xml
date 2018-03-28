@@ -1,11 +1,17 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/gray</item>
-        <item name="colorPrimaryDark">@color/gray</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <!--Appbar背景色，应用的主要色调，actionBar默认使用该颜色-->
+        <item name="colorPrimary">@color/white</item>
+        <!--Appbar背景色，应用的主要色调，actionBar默认使用该颜色-->
+        <item name="colorPrimaryDark">@color/white</item>
+        <!--Button，textView的文字颜色-->
+        <item name="android:textColor">@color/lightseagreen</item>
+        <!--应用的主要文字颜色，actionBar的标题文字默认使用该颜色-->
+        <item name="android:textColorPrimary">@color/lightseagreen</item>
+        <!--状态栏字体颜色-->
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -13,7 +19,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 

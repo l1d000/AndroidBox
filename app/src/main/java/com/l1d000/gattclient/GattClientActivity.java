@@ -73,7 +73,7 @@ public class GattClientActivity extends AppCompatActivity {
         // Initializes list view adapter.
         mLeDeviceListAdapter = new LeDeviceListAdapter(GattClientActivity.this);
         mDeviceList.setAdapter(mLeDeviceListAdapter);
-        scanLeDevice(true);
+
 
     }
 
@@ -107,7 +107,13 @@ public class GattClientActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_scan) {
+            scanLeDevice(true);
+            return true;
+        }
+
+        if (id == R.id.action_stop) {
+            scanLeDevice(false);
             return true;
         }
 
