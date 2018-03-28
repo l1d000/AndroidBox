@@ -1,4 +1,4 @@
-package com.l1d000.blegatt
+package com.l1d000.gatt
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
