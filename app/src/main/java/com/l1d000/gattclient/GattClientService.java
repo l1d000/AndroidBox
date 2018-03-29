@@ -46,20 +46,14 @@ public class GattClientService extends Service {
             "com.example.bluetooth.le.ACTION_DATA_AVAILABLE";
     public final static String EXTRA_DATA =
             "com.example.bluetooth.le.EXTRA_DATA";
-    public static String HEART_RATE_MEASUREMENT =
-            "00002a37-0000-1000-8000-00805f9b34fb";
+    
     public static String CLIENT_CHARACTERISTIC_CONFIG =
             "00002902-0000-1000-8000-00805f9b34fb";
 
-    public final static UUID UUID_HEART_RATE_MEASUREMENT =
-            UUID.fromString(HEART_RATE_MEASUREMENT);
-
     public static UUID TIME_SERVICE =
             UUID.fromString("00001805-0000-1000-8000-00805f9b34fb");
-    /* Mandatory Current Time Information Characteristic */
     public static UUID CURRENT_TIME    =
             UUID.fromString("00002a2b-0000-1000-8000-00805f9b34fb");
-    /* Optional Local Time Information Characteristic */
     public static UUID LOCAL_TIME_INFO =
             UUID.fromString("00002a0f-0000-1000-8000-00805f9b34fb");
 
