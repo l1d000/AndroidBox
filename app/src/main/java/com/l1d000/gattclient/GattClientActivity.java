@@ -1,6 +1,5 @@
 package com.l1d000.gattclient;
 
-import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
@@ -10,13 +9,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.support.v7.app.AppCompatActivity;
 import com.l1d000.blegatt.R;
 
-
+/**
+ * Created by lidongzhou on 18-3-28.
+ */
 public class GattClientActivity extends AppCompatActivity {
-    private LeDeviceListAdapter mLeDeviceListAdapter;
+    private GattClientLeDeviceListAdapter mLeDeviceListAdapter;
     private BluetoothAdapter mBluetoothAdapter;
     private boolean mScanning;
     private Handler mHandler;
@@ -45,6 +48,7 @@ public class GattClientActivity extends AppCompatActivity {
         }
 
         mDeviceList = findViewById(R.id.ble_client_devices_list);
+
     }
 
     @Override
@@ -71,9 +75,23 @@ public class GattClientActivity extends AppCompatActivity {
         }
 
         // Initializes list view adapter.
-        mLeDeviceListAdapter = new LeDeviceListAdapter(GattClientActivity.this);
+        mLeDeviceListAdapter = new GattClientLeDeviceListAdapter(GattClientActivity.this);
         mDeviceList.setAdapter(mLeDeviceListAdapter);
-
+        mDeviceList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                final BluetoothDevice device = mLeDeviceListAdapter.getDevice(i);
+                if (device == null) return;
+                final Intent intent = new Intent(GattClientActivity.this, GattClientConnect.class);
+                intent.putExtra(GattClientConnect.EXTRAS_DEVICE_NAME, device.getName());
+                intent.putExtra(GattClientConnect.EXTRAS_DEVICE_ADDRESS, device.getAddress());
+                if (mScanning) {
+                    mBluetoothAdapter.stopLeScan(mLeScanCallback);
+                    mScanning = false;
+                }
+                startActivity(intent);
+            }
+        });
 
     }
 

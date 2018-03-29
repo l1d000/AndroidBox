@@ -17,12 +17,12 @@ import java.util.ArrayList;
  * Created by lidongzhou on 18-3-28.
  */
 
-public class LeDeviceListAdapter extends BaseAdapter {
+public class GattClientLeDeviceListAdapter extends BaseAdapter {
     private ArrayList<BluetoothDevice> mLeDevices;
     private LayoutInflater mInflator;
     private Context mContext;
 
-    public LeDeviceListAdapter(Context mContext) {
+    public GattClientLeDeviceListAdapter(Context mContext) {
         super();
         mLeDevices = new ArrayList<BluetoothDevice>();
         this.mContext = mContext;

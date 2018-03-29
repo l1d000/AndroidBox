@@ -28,6 +28,12 @@
             android:screenOrientation="portrait"
             android:label="@string/app_name" >
         </activity>
+        <activity
+            android:name="com.l1d000.gattclient.GattClientConnect"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name" >
+        </activity>
+        <service android:name="com.l1d000.gattclient.GattClientService" android:enabled="true"/>
     </application>
 
 </manifest>
