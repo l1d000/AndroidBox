@@ -32,6 +32,7 @@ public class GattClientConnect extends AppCompatActivity {
     private String mDeviceAddress;
     private GattClientService mBluetoothLeService;
     private  TextView mTextView;
+    private  TextView  mTextViewTime;
     // Code to manage Service lifecycle.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
@@ -88,8 +89,8 @@ public class GattClientConnect extends AppCompatActivity {
                 }
 
             } else if (GattClientService.ACTION_DATA_AVAILABLE.equals(action)) {
-                if(mTextView !=null) {
-                    mTextView.append("Data:"+intent.getStringExtra(GattClientService.EXTRA_DATA) + "\n");
+                if(mTextViewTime !=null) {
+                    mTextViewTime.setText("Data:"+intent.getStringExtra(GattClientService.EXTRA_DATA) + "\n");
                 }
 
             }
@@ -107,6 +108,7 @@ public class GattClientConnect extends AppCompatActivity {
 
         // Sets up UI references.
         mTextView = findViewById(R.id.device_connect_address);
+        mTextViewTime = findViewById(R.id.device_connect_time);
         if(mTextView !=null) {
             mTextView.setText(mDeviceName + "\n");
             mTextView.setText(mDeviceAddress + "\n");

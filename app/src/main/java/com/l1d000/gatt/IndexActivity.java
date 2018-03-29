@@ -8,49 +8,48 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
+import com.l1d000.blegatt.R;
 import com.l1d000.gattclient.GattClientActivity;
+import com.l1d000.gattserver.GattServerActivity;
 
 
-public class IndexActivity extends Activity {
+public class IndexActivity extends AppCompatActivity {
 
-//	private int index = 0;
-//	private Timer timer;
-	private Handler handler = new Handler(){
-		@Override
-		public void handleMessage(Message msg) {
-		//	timer.cancel();
-			Intent intent = new Intent(IndexActivity.this,
-					GattClientActivity.class);
-			startActivity(intent);
-			finish();
-			super.handleMessage(msg);
-		}
-	};
+	private void  do_init(){
+		setContentView(R.layout.index_main);
+		Button mButtonClient = (Button)findViewById(R.id.index_client);
+		mButtonClient.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent(IndexActivity.this,
+						GattClientActivity.class);
+				startActivity(intent);
+			//	finish();
+			}
+		});
+
+		Button mButtonServer = (Button)findViewById(R.id.index_server);
+		mButtonServer.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent(IndexActivity.this,
+						GattServerActivity.class);
+				startActivity(intent);
+			//	finish();
+			}
+		});
+	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		requestReadExternalPermission();
-		// setContentView(R.layout.index_main);
-
-		//  ImageView myImage = (ImageView) findViewById(R.id.index_animation);
-		/*myImage.setBackgroundResource(R.anim.index_anim);
-		AnimationDrawable frameAnimation = (AnimationDrawable) myImage.getBackground();
-		frameAnimation.start();*/
-
-		//      myImage.setBackgroundResource(R.drawable.index_icon);
-/*            timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    index = index+1;
-                    handler.sendEmptyMessage(0);
-                }
-            },2000,1000);
-        }*/
-
-
 	}
 
 
@@ -66,7 +65,8 @@ public class IndexActivity extends Activity {
 				requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
 			}
 		} else {
-			handler.sendEmptyMessage(0);
+			do_init();
+
 		}
 	}
 
@@ -81,7 +81,8 @@ public class IndexActivity extends Activity {
 
 					// permission was granted
 					// request successfully, handle you transactions
-					handler.sendEmptyMessage(0);
+					do_init();
+
 				} else {
 
 					// permission denied

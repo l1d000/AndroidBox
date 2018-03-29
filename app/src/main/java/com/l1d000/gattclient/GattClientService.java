@@ -46,7 +46,7 @@ public class GattClientService extends Service {
             "com.example.bluetooth.le.ACTION_DATA_AVAILABLE";
     public final static String EXTRA_DATA =
             "com.example.bluetooth.le.EXTRA_DATA";
-    
+
     public static String CLIENT_CHARACTERISTIC_CONFIG =
             "00002902-0000-1000-8000-00805f9b34fb";
 

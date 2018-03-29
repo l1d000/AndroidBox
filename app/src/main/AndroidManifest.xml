@@ -15,8 +15,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name="com.l1d000.gatt.IndexActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,12 +25,17 @@
         <activity
             android:name="com.l1d000.gattclient.GattClientActivity"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="@string/app_clientname" >
+        </activity>
+        <activity
+            android:name="com.l1d000.gattserver.GattServerActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_server_name" >
         </activity>
         <activity
             android:name="com.l1d000.gattclient.GattClientConnect"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="@string/app_clientname" >
         </activity>
         <service android:name="com.l1d000.gattclient.GattClientService" android:enabled="true"/>
     </application>
