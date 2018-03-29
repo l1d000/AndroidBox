@@ -50,8 +50,19 @@ public class GattClientService extends Service {
             "00002a37-0000-1000-8000-00805f9b34fb";
     public static String CLIENT_CHARACTERISTIC_CONFIG =
             "00002902-0000-1000-8000-00805f9b34fb";
+
     public final static UUID UUID_HEART_RATE_MEASUREMENT =
             UUID.fromString(HEART_RATE_MEASUREMENT);
+
+    public static UUID TIME_SERVICE =
+            UUID.fromString("00001805-0000-1000-8000-00805f9b34fb");
+    /* Mandatory Current Time Information Characteristic */
+    public static UUID CURRENT_TIME    =
+            UUID.fromString("00002a2b-0000-1000-8000-00805f9b34fb");
+    /* Optional Local Time Information Characteristic */
+    public static UUID LOCAL_TIME_INFO =
+            UUID.fromString("00002a0f-0000-1000-8000-00805f9b34fb");
+
 
     // Implements callback methods for GATT events that the app cares about.  For example,
     // connection change and services discovered.
@@ -113,19 +124,21 @@ public class GattClientService extends Service {
         // This is special handling for the Heart Rate Measurement profile.  Data parsing is
         // carried out as per profile specifications:
         // http://developer.bluetooth.org/gatt/characteristics/Pages/CharacteristicViewer.aspx?u=org.bluetooth.characteristic.heart_rate_measurement.xml
-        if (UUID_HEART_RATE_MEASUREMENT.equals(characteristic.getUuid())) {
-            int flag = characteristic.getProperties();
-            int format = -1;
-            if ((flag & 0x01) != 0) {
-                format = BluetoothGattCharacteristic.FORMAT_UINT16;
-                Log.d(TAG, "Heart rate format UINT16.");
-            } else {
-                format = BluetoothGattCharacteristic.FORMAT_UINT8;
-                Log.d(TAG, "Heart rate format UINT8.");
+        if (CURRENT_TIME.equals(characteristic.getUuid())) {
+            final byte[] data = characteristic.getValue();
+            if (data != null && data.length > 0) {
+                final StringBuilder stringBuilder = new StringBuilder(data.length);
+              //  for(byte byteChar : data)
+                int year = (((data[1] & 0xFF)<<8)|(data[0] & 0xFF));
+                stringBuilder.append(year+"年");
+                stringBuilder.append(data[2]+"月");
+                stringBuilder.append(data[3]+"日");
+                if (data[5] <10)
+                    stringBuilder.append(data[4]+":0"+data[5]);
+                else
+                    stringBuilder.append(data[4]+":"+data[5]);
+                intent.putExtra(EXTRA_DATA, stringBuilder.toString());
             }
-            final int heartRate = characteristic.getIntValue(format, 1);
-            Log.d(TAG, String.format("Received heart rate: %d", heartRate));
-            intent.putExtra(EXTRA_DATA, String.valueOf(heartRate));
         } else {
             // For all other profiles, writes the data formatted in HEX.
             final byte[] data = characteristic.getValue();
@@ -284,7 +297,7 @@ public class GattClientService extends Service {
         mBluetoothGatt.setCharacteristicNotification(characteristic, enabled);
 
         // This is specific to Heart Rate Measurement.
-        if (UUID_HEART_RATE_MEASUREMENT.equals(characteristic.getUuid())) {
+        if (CURRENT_TIME.equals(characteristic.getUuid())) {
             BluetoothGattDescriptor descriptor = characteristic.getDescriptor(
                     UUID.fromString(CLIENT_CHARACTERISTIC_CONFIG));
             descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);

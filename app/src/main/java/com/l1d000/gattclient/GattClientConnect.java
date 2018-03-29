@@ -1,5 +1,7 @@
 package com.l1d000.gattclient;
 
+import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattService;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -29,7 +31,7 @@ public class GattClientConnect extends AppCompatActivity {
     private String mDeviceName;
     private String mDeviceAddress;
     private GattClientService mBluetoothLeService;
-
+    private  TextView mTextView;
     // Code to manage Service lifecycle.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
@@ -59,14 +61,36 @@ public class GattClientConnect extends AppCompatActivity {
     private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+
             final String action = intent.getAction();
             if (GattClientService.ACTION_GATT_CONNECTED.equals(action)) {
-
+                if(mTextView !=null)
+                    mTextView.append("Connected\n");
             } else if (GattClientService.ACTION_GATT_DISCONNECTED.equals(action)) {
-
+                if(mTextView !=null)
+                    mTextView.append("Disconnected\n");
             } else if (GattClientService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
+                if(mTextView !=null){
+                    for(BluetoothGattService gattService:mBluetoothLeService.getSupportedGattServices()) {
+                        mTextView.append(gattService.getUuid().toString() + "\n");
+
+                        for (BluetoothGattCharacteristic gattCharacteristic : gattService.getCharacteristics()) {
+                            mTextView.append("getProperties: "+gattCharacteristic.getProperties() + "\n");
+                            if ((gattCharacteristic.getProperties() & BluetoothGattCharacteristic.PROPERTY_NOTIFY) > 0) {
+                                mBluetoothLeService.setCharacteristicNotification(
+                                        gattCharacteristic, true);
+                                if(mTextView !=null) {
+                                    mTextView.append("Data:"+"setCharacteristicNotification" + "\n");
+                                }
+                            }
+                        }
+                    }
+                }
 
             } else if (GattClientService.ACTION_DATA_AVAILABLE.equals(action)) {
+                if(mTextView !=null) {
+                    mTextView.append("Data:"+intent.getStringExtra(GattClientService.EXTRA_DATA) + "\n");
+                }
 
             }
         }
@@ -82,8 +106,11 @@ public class GattClientConnect extends AppCompatActivity {
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
 
         // Sets up UI references.
-        ((TextView) findViewById(R.id.device_connect_address)).setText(mDeviceAddress);
-
+        mTextView = findViewById(R.id.device_connect_address);
+        if(mTextView !=null) {
+            mTextView.setText(mDeviceName + "\n");
+            mTextView.setText(mDeviceAddress + "\n");
+        }
         Intent gattServiceIntent = new Intent(this, GattClientService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
     }

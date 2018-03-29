@@ -64,7 +64,7 @@ public class GattClientActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        scanLeDevice(true);
         // Ensures Bluetooth is enabled on the device.  If Bluetooth is not currently enabled,
         // fire an intent to display a dialog asking the user to grant permission to enable it.
         if (!mBluetoothAdapter.isEnabled()) {
@@ -98,6 +98,7 @@ public class GattClientActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        scanLeDevice(false);
     }
 
     @Override
