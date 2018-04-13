@@ -26,11 +26,13 @@
         android:id="@+id/index_client"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_margin="15dip"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="15dp"
         android:background="@drawable/index_main_button"
         android:gravity="center"
-        android:text="Gatt Client" />
+        android:text="@string/app_client_name" />
 
     <Button
         android:id="@+id/index_server"
@@ -40,6 +42,6 @@
         android:layout_marginTop="300dp"
         android:background="@drawable/index_main_button"
         android:gravity="center"
-        android:text="Gatt Server" />
+        android:text="@string/app_server_name" />
 
 </LinearLayout>

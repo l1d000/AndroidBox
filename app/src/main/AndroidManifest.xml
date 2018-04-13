@@ -25,7 +25,7 @@
         <activity
             android:name="com.l1d000.gattclient.GattClientActivity"
             android:screenOrientation="portrait"
-            android:label="@string/app_clientname" >
+            android:label="@string/app_client_name" >
         </activity>
         <activity
             android:name="com.l1d000.gattserver.GattServerActivity"
@@ -35,7 +35,7 @@
         <activity
             android:name="com.l1d000.gattclient.GattClientConnect"
             android:screenOrientation="portrait"
-            android:label="@string/app_clientname" >
+            android:label="@string/app_client_name" >
         </activity>
         <service android:name="com.l1d000.gattclient.GattClientService" android:enabled="true"/>
     </application>
