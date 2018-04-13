@@ -294,4 +294,16 @@
 <color name="navy">#000080</color><!--海军色 -->
 
 <color name="black">#000000</color><!--黑色 -->
+
+
+
+<color name="color_for_list_background">#1ADDF9FF</color>
+<color name="color_for_title">#6CDDF9FF</color>
+<color name="color_for_list">#99DDF9FF</color>
+<color name="title_list_selected">#7C3C5F78</color>
+
+<color name="main_background">#EE6AA7</color>
+<color name="toolbar_background">#283f50</color>
+<color name="title_one">#9CBDCC</color>
+<color name="list_text_title">#DDF9FF</color>
 </resources>

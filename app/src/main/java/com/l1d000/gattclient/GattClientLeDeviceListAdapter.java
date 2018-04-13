@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 
-import com.l1d000.blegatt.R;
+import com.l1d000.androidbox.R;
 
 import java.util.ArrayList;
 

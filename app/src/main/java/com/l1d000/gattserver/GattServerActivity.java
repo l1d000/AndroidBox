@@ -45,7 +45,7 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.l1d000.blegatt.R;
+import com.l1d000.androidbox.R;
 
 import java.util.Arrays;
 import java.util.Date;

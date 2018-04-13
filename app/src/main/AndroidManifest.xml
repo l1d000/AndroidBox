@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.l1d000.blegatt">
+    package="com.l1d000.androidbox">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
@@ -14,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.l1d000.gatt.IndexActivity"
+            android:name="com.l1d000.Index.IndexActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,6 +35,12 @@
         </activity>
         <activity
             android:name="com.l1d000.gattclient.GattClientConnect"
+            android:screenOrientation="portrait"
+            android:label="@string/app_client_name" >
+        </activity>
+        <activity
+            android:theme="@style/MusicAppTheme"
+            android:name="com.l1d000.musicplayer.MuiscBrowerPlayerActivity"
             android:screenOrientation="portrait"
             android:label="@string/app_client_name" >
         </activity>

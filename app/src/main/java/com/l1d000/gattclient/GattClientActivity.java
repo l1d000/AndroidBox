@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.support.v7.app.AppCompatActivity;
-import com.l1d000.blegatt.R;
+import com.l1d000.androidbox.R;
 
 /**
  * Created by lidongzhou on 18-3-28.

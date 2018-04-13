@@ -1,23 +1,19 @@
-package com.l1d000.gatt;
+package com.l1d000.Index;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import com.l1d000.blegatt.R;
+
+import com.l1d000.androidbox.R;
 import com.l1d000.gattclient.GattClientActivity;
 import com.l1d000.gattserver.GattServerActivity;
-
+import com.l1d000.musicplayer.MuiscBrowerPlayerActivity;
 
 public class IndexActivity extends AppCompatActivity {
 
@@ -44,6 +40,17 @@ public class IndexActivity extends AppCompatActivity {
 			//	finish();
 			}
 		});
+
+		Button mButtonBrowserPlayer = (Button)findViewById(R.id.index_music_browser_player);
+		mButtonBrowserPlayer.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent(IndexActivity.this,
+						MuiscBrowerPlayerActivity.class);
+				startActivity(intent);
+				//	finish();
+			}
+		});
 	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +59,11 @@ public class IndexActivity extends AppCompatActivity {
 		requestReadExternalPermission();
 	}
 
+	String[] permissions = new String[2];
 
 	@SuppressLint("NewApi")
 	public void requestReadExternalPermission() {
+
 		if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
 				!= PackageManager.PERMISSION_GRANTED) {
 
@@ -62,9 +71,27 @@ public class IndexActivity extends AppCompatActivity {
 
 			} else {
 				// 0 是自己定义的请求coude
-				requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
+				//requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
+				permissions[0] = Manifest.permission.ACCESS_COARSE_LOCATION;
 			}
-		} else {
+		}
+
+		if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+				!= PackageManager.PERMISSION_GRANTED) {
+
+			if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+			} else {
+				// 1 是自己定义的请求coude
+				permissions[1] = Manifest.permission.READ_EXTERNAL_STORAGE;
+
+			}
+		}
+
+		if(permissions[0] != null || permissions[1] != null){
+			requestPermissions(permissions, 0);
+		}
+		else {
 			do_init();
 
 		}
@@ -91,6 +118,7 @@ public class IndexActivity extends AppCompatActivity {
 
 				return;
 			}
+
 			default:
 				break;
 

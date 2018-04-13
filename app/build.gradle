@@ -7,7 +7,7 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "com.l1d000.blegatt"
+        applicationId "com.l1d000.androidbox"
         minSdkVersion 26
         targetSdkVersion 26
         versionCode 1
