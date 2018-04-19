@@ -38,13 +38,21 @@
             android:screenOrientation="portrait"
             android:label="@string/app_client_name" >
         </activity>
+        <service android:name="com.l1d000.gattclient.GattClientService" android:enabled="true"/>
         <activity
             android:theme="@style/MusicAppTheme"
-            android:name="com.l1d000.musicplayer.MuiscBrowerPlayerActivity"
+            android:name="com.l1d000.musicplayer.MainActivity"
             android:screenOrientation="portrait"
             android:label="@string/app_client_name" >
         </activity>
-        <service android:name="com.l1d000.gattclient.GattClientService" android:enabled="true"/>
+        <service
+            android:name="com.l1d000.musicplayer.MediaBrowserService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.media.browse.MediaBrowserService"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
