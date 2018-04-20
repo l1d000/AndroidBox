@@ -5,10 +5,12 @@ package com.l1d000.musicplayer;
  */
 
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
 import android.support.annotation.Nullable;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
@@ -27,10 +29,14 @@ import android.widget.TextView;
 
 
 import com.l1d000.androidbox.R;
+import com.l1d000.musicplayer.files.HtcSong;
 import com.l1d000.musicplayer.files.PlayerConstants;
 
 
 import java.util.ArrayList;
+
+import static android.support.v4.media.session.PlaybackStateCompat.STATE_PAUSED;
+import static android.support.v4.media.session.PlaybackStateCompat.STATE_PLAYING;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,15 +54,15 @@ public class MainActivity extends AppCompatActivity {
     private TextView music_text_author;
     private boolean current_song_state = false;
     private RelativeLayout layout_root;
-    private MediaBrowserAdapter musicPlayerAdapter;
-
+    private MediaBrowserAdapter mMediaBrowserAdapter;
+    private boolean MusicPlayState = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.music_player_activity_main);
-        musicPlayerAdapter=new MediaBrowserAdapter(MainActivity.this);
-        musicPlayerAdapter.addListener(new MediaBrowserInterface.MediaBrowserChangeListener() {
+        mMediaBrowserAdapter=new MediaBrowserAdapter(MainActivity.this);
+        mMediaBrowserAdapter.addListener(new MediaBrowserInterface.MediaBrowserChangeListener() {
             @Override
             public void onConnected(@Nullable MediaControllerCompat mediaController) {
 
@@ -81,7 +87,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         findAllViewById();
-
+        loadMusicFiles();
+        setAllViewListener();
     }
 
     @Override
@@ -90,8 +97,8 @@ public class MainActivity extends AppCompatActivity {
         Log.i("main","on create");
         if (list_view == null)
             list_view = (RecyclerView)findViewById(R.id.recycler_view);
-        musicPlayerAdapter.onStart(musicPlayerAdapter, list_view);
-      //  loadMusicFiles();
+        mMediaBrowserAdapter.onStart();
+     //   loadMusicFiles();
     //    musicPlayerAdapter.getTransportControls().play();
     }
 
@@ -99,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
     public void onStop() {
         super.onStop();
         Log.i(TAG, "onStop: MainActivity");
-        musicPlayerAdapter.onStop();
+        mMediaBrowserAdapter.onStop();
     }
 
     @Override
@@ -130,8 +137,56 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private void setAllViewListener() {
+        image_view_play_toggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!MusicPlayState){
+                    mMediaBrowserAdapter.getTransportControls().play();
+                    image_view_play_toggle.setImageResource(R.drawable.music_main_pause);
+                    MusicPlayState = true;
+                }else{
+                    mMediaBrowserAdapter.getTransportControls().pause();
+                    image_view_play_toggle.setImageResource(R.drawable.music_main_play);
+                    MusicPlayState = false;
+                }
+            }
+        });
+    }
 
+    // 导入音乐文件
+    private void loadMusicFiles(){
+        // 设置音乐列表中每一列的状态
+        // RecyclerView list_view = (RecyclerView)mContext.findViewById(R.id.recycler_view);
+        list_view.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        list_view.setAdapter(mMediaBrowserAdapter);
+        list_view.addItemDecoration(new DividerItemDecoration(MainActivity.this,
+                DividerItemDecoration.VERTICAL));
+        mMediaBrowserAdapter.setOnItemClickListener(new MediaBrowserInterface.OnItemClickListener()
+        {
 
+            @Override
+            public void onItemClick(View view, int position)
+            {
+              //  mMediaBrowserAdapter.getTransportControls().play();
+                Bundle extras = new Bundle();
+
+                HtcSong temp = mMediaBrowserAdapter.getAllSongs().get(position);
+            //    extras.putParcelable("song", temp);
+                extras.putInt("song", position);
+                mMediaBrowserAdapter.getTransportControls().playFromMediaId(temp.getId().toString(), extras);
+                image_view_play_toggle.setImageResource(R.drawable.music_main_pause);
+                MusicPlayState = true;
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position)
+            {
+
+            }
+        });
+
+    }
 
 
 

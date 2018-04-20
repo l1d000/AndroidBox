@@ -18,6 +18,7 @@ package com.l1d000.musicplayer;
 
 import android.content.ComponentName;
 import android.content.Context;
+import android.os.Bundle;
 import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -44,31 +45,30 @@ import java.util.List;
 
 
 public class MediaBrowserAdapter extends RecyclerView.Adapter<MediaBrowserAdapter.MyMusicPlayerViewHolder> {
-   // private static ArrayList<HtcSong> allsongs;
+   private static ArrayList<HtcSong> allsongs;
     private Context mContext;
     private static final String TAG = MediaBrowserAdapter.class.getSimpleName();
-    private  static ArrayList <HtcSong> allsongs =  new ArrayList<HtcSong>();
     private final List<MediaBrowserInterface.MediaBrowserChangeListener> mListeners = new ArrayList<>();
-    private  MediaBrowserAdapter mMediaBrowserAdapter;
-    private  RecyclerView list_view;
+    private MediaBrowserCompat mMediaBrowser;
+    @Nullable
+    private MediaControllerCompat mMediaController;
+    private MediaBrowserInterface.OnItemClickListener mOnItemClickListener;
+    private final MediaBrowserConnectionCallback mMediaBrowserConnectionCallback =
+            new MediaBrowserConnectionCallback();
+    private final MediaControllerCallback mMediaControllerCallback =
+            new MediaControllerCallback();
+    private final MediaBrowserSubscriptionCallback mMediaBrowserSubscriptionCallback =
+            new MediaBrowserSubscriptionCallback();
 
     public MediaBrowserAdapter(Context mContext) {
         this.mContext = mContext;
-    //    if(allsongs==null) {
-     //       allsongs = (ArrayList<HtcSong>) AllSongs.getAllSongs(mContext);
+        if(allsongs==null) {
+            allsongs = (ArrayList<HtcSong>) AllSongs.getAllSongs(mContext);
 
-     //   }
+        }
     }
 
-    // 自定义RecycleView内的点击事件(2)
-    private MediaBrowserInterface.OnItemClickListener mOnItemClickListener;
-
-    // 自定义RecycleView内的点击事件(3)
-    public void setOnItemClickListener(MediaBrowserInterface.OnItemClickListener mOnItemClickListener)
-    {
-        this.mOnItemClickListener = mOnItemClickListener;
-    }
-
+    /*ListView adapter*/
     @Override
     public MyMusicPlayerViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
@@ -86,7 +86,7 @@ public class MediaBrowserAdapter extends RecyclerView.Adapter<MediaBrowserAdapte
         HtcSong HtcSong = allsongs.get(position);
         holder.my_music_title.setText(HtcSong.getTitle());
         holder.my_music_author.setText(HtcSong.getAuthor());
-//        holder.my_music_duration.setText(AllSongs.formatTime(HtcSong.getDuration()));
+        holder.my_music_duration.setText(AllSongs.formatTime(HtcSong.getDuration()));
 
         // 自定义RecycleView内的点击事件(4)
         // 如果设置了回调，则设置点击事件
@@ -139,13 +139,14 @@ public class MediaBrowserAdapter extends RecyclerView.Adapter<MediaBrowserAdapte
     }
 
 
-    private MediaBrowserCompat mMediaBrowser;
-    @Nullable
-    private MediaControllerCompat mMediaController;
+   /*MainActivity */
+    public void setOnItemClickListener(MediaBrowserInterface.OnItemClickListener mOnItemClickListener)
+    {
+        this.mOnItemClickListener = mOnItemClickListener;
+    }
 
-    public void onStart(MediaBrowserAdapter mMediaBrowserAdapter, RecyclerView list_view) {
-        this.mMediaBrowserAdapter = mMediaBrowserAdapter;
-        this.list_view = list_view;
+    public void onStart() {
+
         if (mMediaBrowser == null) {
             mMediaBrowser =
                     new MediaBrowserCompat(
@@ -170,30 +171,9 @@ public class MediaBrowserAdapter extends RecyclerView.Adapter<MediaBrowserAdapte
 
         Log.d(TAG, "onStop: Releasing MediaController, Disconnecting from MediaBrowser");
     }
-    // 导入音乐文件
-    private void loadMusicFiles(){
-        // 设置音乐列表中每一列的状态
-       // RecyclerView list_view = (RecyclerView)mContext.findViewById(R.id.recycler_view);
-        list_view.setLayoutManager(new LinearLayoutManager(mContext));
-        list_view.setAdapter(mMediaBrowserAdapter);
-        list_view.addItemDecoration(new DividerItemDecoration(mContext,
-                DividerItemDecoration.VERTICAL));
-        mMediaBrowserAdapter.setOnItemClickListener(new MediaBrowserInterface.OnItemClickListener()
-        {
 
-            @Override
-            public void onItemClick(View view, int position)
-            {
-                mMediaBrowserAdapter.getTransportControls().play();
-            }
-
-            @Override
-            public void onItemLongClick(View view, int position)
-            {
-
-            }
-        });
-
+    public ArrayList<HtcSong> getAllSongs(){
+        return allsongs;
     }
 
     public void addListener(MediaBrowserInterface.MediaBrowserChangeListener listener) {
@@ -222,12 +202,6 @@ public class MediaBrowserAdapter extends RecyclerView.Adapter<MediaBrowserAdapte
         }
     }
 
-    private final MediaBrowserConnectionCallback mMediaBrowserConnectionCallback =
-            new MediaBrowserConnectionCallback();
-    private final MediaControllerCallback mMediaControllerCallback =
-            new MediaControllerCallback();
-    private final MediaBrowserSubscriptionCallback mMediaBrowserSubscriptionCallback =
-            new MediaBrowserSubscriptionCallback();
 
     public MediaControllerCompat.TransportControls getTransportControls() {
         if (mMediaController == null) {
@@ -237,6 +211,15 @@ public class MediaBrowserAdapter extends RecyclerView.Adapter<MediaBrowserAdapte
         return mMediaController.getTransportControls();
     }
 
+    public int  getPlaybackState(){
+        if (mMediaController.getPlaybackState() !=null) {
+            Log.d(TAG, mMediaController.getPlaybackState().getState()+"");
+            return mMediaController.getPlaybackState().getState();
+        }else
+            return 0;
+    }
+
+    /*class */
     public class MediaBrowserConnectionCallback extends MediaBrowserCompat.ConnectionCallback {
 
         // Happens as a result of onStart().
@@ -273,7 +256,7 @@ public class MediaBrowserAdapter extends RecyclerView.Adapter<MediaBrowserAdapte
 
         @Override
         public void onPlaybackStateChanged(@Nullable final PlaybackStateCompat state) {
-
+            Log.d(TAG,  "LIDONG"+state+"");
         }
 
         @Override
@@ -292,19 +275,6 @@ public class MediaBrowserAdapter extends RecyclerView.Adapter<MediaBrowserAdapte
                                      @NonNull List<MediaBrowserCompat.MediaItem> children) {
             assert mMediaController != null;
 
-            // Queue up all media items for this simple sample.
-            allsongs.clear();
-            for (final MediaBrowserCompat.MediaItem mediaItem : children) {
-                mMediaController.addQueueItem(mediaItem.getDescription());
-                HtcSong song = new HtcSong();
-                song.setTitle(mediaItem.getDescription().getTitle().toString());
-             //   song.getAuthor(mediaItem.getDescription().get);
-             //   song.setDuration(mediaItem.getDescription().getMediaUri());
-                allsongs.add(song);
-            }
-
-            loadMusicFiles();
-            mMediaController.getTransportControls().prepare();
         }
     }
 }

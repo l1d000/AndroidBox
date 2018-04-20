@@ -17,6 +17,8 @@
 package com.l1d000.musicplayer;
 
 import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Build;
@@ -29,12 +31,14 @@ import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 
 
 import com.l1d000.musicplayer.files.AllSongs;
 import com.l1d000.musicplayer.files.HtcSong;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -170,33 +174,32 @@ public class MediaBrowserService extends MediaBrowserServiceCompat {
         @Override
         public void onPlay() {
             Log.i(TAG, "onPlay: ");
-      //      if (!isReadyToPlay()) {
-                // Nothing to play.
-                try{
-                    mediaPlayer.reset();    // 可以使播放器从Error状态中恢复过来，重新会到Idle状态
-                    mediaPlayer.setDataSource(allsongs.get(0).getMusicPath());
-                    mediaPlayer.prepare();  // 准备(同步)
-                    mediaPlayer.start();
+            mediaPlayer.start();
+        }
 
-
-
-                }catch (Exception e) {
-                    e.printStackTrace();
-                }
-           //     return;
-      //      }
-
-            //if (mPreparedMedia == null) {
-            //    onPrepare();
-           // }
-
-      //      mPlayback.playFromMedia(mPreparedMedia);
-            Log.d(TAG, "onPlayFromMediaId: MediaSession active");
+        @Override
+        public void onPlayFromMediaId(String mediaId, Bundle extras) {
+            Log.d(TAG, "Hello"+mediaId);
+            mediaPlayer.reset();    // 可以使播放器从Error状态中恢复过来，重新会到Idle状态
+            HtcSong song = allsongs.get(extras.getInt("song", 0));
+            try {
+                mediaPlayer.setDataSource(song.getMusicPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                mediaPlayer.prepare();  // &#x51c6;&#x5907;(&#x540c;&#x6b65;)
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            mediaPlayer.start();
+            super.onPlayFromMediaId(mediaId, extras);
         }
 
         @Override
         public void onPause() {
             Log.i(TAG, "onPause: ");
+            mediaPlayer.pause();
       //      mPlayback.pause();
         }
 
