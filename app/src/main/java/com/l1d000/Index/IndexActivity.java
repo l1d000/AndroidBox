@@ -13,7 +13,7 @@ import android.widget.Button;
 import com.l1d000.androidbox.R;
 import com.l1d000.gattclient.GattClientActivity;
 import com.l1d000.gattserver.GattServerActivity;
-import com.l1d000.musicplayer.MainActivity;
+import com.l1d000.musicplayer.MediaBrowserMainActivity;
 
 public class IndexActivity extends AppCompatActivity {
 
@@ -46,7 +46,7 @@ public class IndexActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View view) {
 				Intent intent = new Intent(IndexActivity.this,
-						MainActivity.class);
+						MediaBrowserMainActivity.class);
 				startActivity(intent);
 				//	finish();
 			}

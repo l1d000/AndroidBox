@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import static android.support.v4.media.session.PlaybackStateCompat.STATE_PAUSED;
 import static android.support.v4.media.session.PlaybackStateCompat.STATE_PLAYING;
 
-public class MainActivity extends AppCompatActivity {
+public class MediaBrowserMainActivity extends AppCompatActivity {
 
     private static final String TAG = "HTC-M MainActivity";
     private Toolbar main_toolbar;
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.music_player_activity_main);
-        mMediaBrowserAdapter=new MediaBrowserAdapter(MainActivity.this);
+        mMediaBrowserAdapter=new MediaBrowserAdapter(MediaBrowserMainActivity.this);
         mMediaBrowserAdapter.addListener(new MediaBrowserInterface.MediaBrowserChangeListener() {
             @Override
             public void onConnected(@Nullable MediaControllerCompat mediaController) {
@@ -158,9 +158,9 @@ public class MainActivity extends AppCompatActivity {
     private void loadMusicFiles(){
         // 设置音乐列表中每一列的状态
         // RecyclerView list_view = (RecyclerView)mContext.findViewById(R.id.recycler_view);
-        list_view.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        list_view.setLayoutManager(new LinearLayoutManager(MediaBrowserMainActivity.this));
         list_view.setAdapter(mMediaBrowserAdapter);
-        list_view.addItemDecoration(new DividerItemDecoration(MainActivity.this,
+        list_view.addItemDecoration(new DividerItemDecoration(MediaBrowserMainActivity.this,
                 DividerItemDecoration.VERTICAL));
         mMediaBrowserAdapter.setOnItemClickListener(new MediaBrowserInterface.OnItemClickListener()
         {

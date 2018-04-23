@@ -41,7 +41,7 @@
         <service android:name="com.l1d000.gattclient.GattClientService" android:enabled="true"/>
         <activity
             android:theme="@style/MusicAppTheme"
-            android:name="com.l1d000.musicplayer.MainActivity"
+            android:name="com.l1d000.musicplayer.MediaBrowserMainActivity"
             android:screenOrientation="portrait"
             android:label="@string/app_client_name" >
         </activity>
