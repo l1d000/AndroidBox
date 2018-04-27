@@ -14,6 +14,7 @@ import com.l1d000.androidbox.R;
 import com.l1d000.gattclient.GattClientActivity;
 import com.l1d000.gattserver.GattServerActivity;
 import com.l1d000.musicplayer.MediaBrowserMainActivity;
+import com.l1d000.spp.SPPActivity;
 
 public class IndexActivity extends AppCompatActivity {
 
@@ -47,6 +48,17 @@ public class IndexActivity extends AppCompatActivity {
 			public void onClick(View view) {
 				Intent intent = new Intent(IndexActivity.this,
 						MediaBrowserMainActivity.class);
+				startActivity(intent);
+				//	finish();
+			}
+		});
+
+		Button mButtonSPP = (Button)findViewById(R.id.index_spp);
+		mButtonSPP.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent(IndexActivity.this,
+						SPPActivity.class);
 				startActivity(intent);
 				//	finish();
 			}

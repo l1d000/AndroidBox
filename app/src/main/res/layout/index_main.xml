@@ -54,4 +54,14 @@
         android:gravity="center"
         android:text="@string/app_music_browser_player_name" />
 
+    <Button
+        android:id="@+id/index_spp"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_margin="15dip"
+        android:layout_marginTop="300dp"
+        android:background="@drawable/index_main_button"
+        android:gravity="center"
+        android:text="@string/app_spp_name" />
+
 </LinearLayout>

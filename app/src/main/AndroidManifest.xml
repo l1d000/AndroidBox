@@ -53,6 +53,12 @@
                 <action android:name="android.media.browse.MediaBrowserService"/>
             </intent-filter>
         </service>
+
+        <activity
+            android:name="com.l1d000.spp.SPPActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_spp_name" >
+        </activity>
     </application>
 
 </manifest>
